@@ -25,9 +25,10 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int fullscreen_content=0x7f080000;
         public static final int fullscreen_content_controls=0x7f080001;
-        public static final int webView=0x7f080002;
+        public static final int imageView1=0x7f080002;
+        public static final int surfaceView1=0x7f080000;
+        public static final int webView=0x7f080003;
     }
     public static final class layout {
         public static final int activity_fullscreen=0x7f030000;
@@ -37,6 +38,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int oldsmobile=0x7f040000;
         public static final int silence=0x7f040001;
         public static final int wedellwilliams=0x7f040002;
+        public static final int westernreservelogo=0x7f040003;
     }
     public static final class string {
         public static final int app_name=0x7f060000;

@@ -28,8 +28,11 @@ import android.os.RemoteException;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 /**
@@ -82,7 +85,8 @@ public class FullscreenActivity extends Activity {
 	  private int minmin;
 	  private MediaPlayer mp;
 	  private String packs = "";
-	  
+	  private SurfaceView surfaceView;
+	  private ImageView imageView;
 	  private static final String TAG = FullscreenActivity.class.getSimpleName();
 	  
 	  
@@ -114,9 +118,11 @@ public class FullscreenActivity extends Activity {
 			editor.commit();
 		}
 		mp= MediaPlayer.create(getApplicationContext(),R.raw.silence);
+		surfaceView = (SurfaceView) findViewById(R.id.surfaceView1);
+		imageView = (ImageView) findViewById(R.id.imageView1);
 		
 		beaconManager = new BeaconManager(this);
-	    beaconManager.setForegroundScanPeriod(5000, 5000);
+	    beaconManager.setForegroundScanPeriod(5000, 1000);
 	    
 	    beaconManager.setRangingListener(new BeaconManager.RangingListener() {
 	      @Override
@@ -139,10 +145,12 @@ public class FullscreenActivity extends Activity {
 		  	    	Toast.makeText(FullscreenActivity.this, Integer.toString(bacon.getMinor()), Toast.LENGTH_SHORT).show();
 		  	    }
 	            
+	            
 	            //If switching to a new beacon, it starts to play the song unique to it
 	            // as defined by the SharedPreferences
 	            if((checker == null || checker.getMinor() != bacon.getMinor()) && bacon != null  && settings.contains(Integer.toString(bacon.getMinor()))){
 	            	checker = bacon;
+	            	surfaceView.setVisibility(View.GONE);
 	            	mp.reset();
 	            	String UriString = settings.getString(Integer.toString(bacon.getMinor()), "");
 	            	Context ct = FullscreenActivity.this.getApplicationContext();
@@ -154,6 +162,12 @@ public class FullscreenActivity extends Activity {
 	            		
 						try {
 							mp = MediaPlayer.create(ct,ResID);
+							if(65535 == bacon.getMinor()){
+								SurfaceHolder surfaceHolder = surfaceView.getHolder();
+								surfaceView.setVisibility(View.VISIBLE);
+								surfaceView.bringToFront();
+								mp.setDisplay(surfaceHolder);
+							}
 							mp.start();
 						} catch (IllegalArgumentException e) {
 							e.printStackTrace();
